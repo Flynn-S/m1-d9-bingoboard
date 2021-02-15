@@ -16,125 +16,189 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BingoGame</title>
-  <link
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BingoGame</title>
+    <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;800&display=swap"
       rel="stylesheet"
-  >
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h1> BINGO GAME</h1>
-  <div id="bingoBoard">
-    <!-- all the bingo numbers go inside this div -->
-  </div>
-  <div id="userBoard">
-    <!-- user number card -->
-  </div>
-  <script>
-    window.onload = function () {
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    
+    <h1>BIN<span>GO</span></h1>
+    
+    <div id="bingoBoard">
+      <!-- all the bingo numbers go inside this div -->
+    </div>
+    <div id="userBoard">
+      <!-- user number card -->
+    </div>
+    <script>
+      // window.onload = function () {
         // const numberOfDays = daysInThisMonth(); // stores the exact number of days in the current month
         // console.log("this is the value of numberOfDays", numberOfDays);
         let bingoBoard = document.querySelector("#bingoBoard"); // getting a reference for the bingo div
-        
-        for (let i =1;i <= 76;i++) {
-          const child = document.createElement("div"); // this will create an empty day cell
-          child.className = "BBnum"; // assigning the CSS class
+
+        for (let i = 1; i <= 76; i++) {
+          const child = document.createElement("div"); // this will create an empty container for the numbers
+          child.className = "BBnum"; // assigning the CSS class for the container
+
           const BBnum = document.createElement("h3"); //label for bingoboard number
-          const bingoNum = i; //for loop interation populates bingoboard with numbers
-          BBnum.innerText = bingoNum; //adding the number as innerText of the newly created div
+          BBnum.className = "BBnumHeading"
+          BBnum.innerText = i; //adding the number 1-76 as innerText of the newly created div
           child.appendChild(BBnum); //adding the <h3> inside the bingo board cell
           bingoBoard.appendChild(child); //adding the day cell inside the bingoBoard div
-          
         }
 
         let userBoard = document.querySelector("#userBoard"); // getting a reference for the bingo div
         const boards = document.createElement("div");
         boards.className = "boards"; // assigning the CSS class
-        userBoard.appendChild(boards)
-        for (let i =1;i <= 24;i++) {
-          const child2 = document.createElement("div"); // this will create an empty day cell
-          child2.className = "userNum"; // assigning the CSS class
-          const userNumlabel = document.createElement("h3"); //label for bingoboard number
-          const userNum = Math.floor((Math.random()* 76)+1); //for loop interation populates bingoboard with numbers
-          userNumlabel.innerText = userNum; //adding the number as innerText of the newly created div
-          child2.appendChild(userNumlabel); //adding the <h3> inside the day cell
-          boards.appendChild(child2); //adding the day cell inside the bingoBoard div
-          userBoard.appendChild(boards);
-        }
-        let div = document.createElement('div')
-        div.className = 'userDividers'; // assign divider css class 
-        div.textContent = `Board 1`
-        boards.appendChild(div)
+        userBoard.appendChild(boards);
+        userArray = []
+
+        const addNewBoard2= function() {
+         
+        
+          for (let i = 1; i <= 24; i++) {
+            
+            let userNum = Math.floor(Math.random() * 76 + 1); //for loop interation populates bingoboard with numbers
+            
+            const child2 = document.createElement("div"); // this will create an empty day cell
+            child2.className = "userNum"; // assigning the CSS class
+            
+            const userNumlabel = document.createElement("h3"); //label for bingoboard number
+            userNumlabel.className = "userNumberHeading"
+            userNumlabel.innerText = userNum; //adding the number as innerText of the newly created div
+            
+            child2.appendChild(userNumlabel); //adding the <h3> inside the day cell
+            boards.appendChild(child2); //adding the day cell inside the bingoBoard div
+            userBoard.appendChild(boards);
+          }
+        
+          let div = document.createElement("div");
+          div.className = "userDividers"; // assign divider css class
+          div.textContent = `Board 1`;
+          boards.appendChild(div);
       }
+
+      addNewBoard2()
+      // };
+
+      let bingoArray = []; 
+      let boardNumber = 1;
+      let winningNums = []
       
-      
-      
-      const bingoArray = [...Array(76+1).keys()].slice(1);   // trying to work out how to generate a list of numbers in an array so that I can prevent numbers
-      //                                                           // which have already been generated from being generated again. 
-      
-      // for (rand of bingoArray)
-      // bingoArray[Math.floor((Math.random()* 76))]
-      // bingoArray.slice
-      // const random2 = function (event) {
-      //   console.log(Math.floor((Math.random()* 76)));
-      // }
-      
-      
-      
-      let boardNumber = 1 
-      // let numbersDrawn = 76
-      // let randNum = bingoArray[Math.floor((Math.random()* numbersDrawn))] 
-      //  numbersDrawn --
 
       const playBingo = function (event) {
-          let randNum = Math.floor((Math.random()* 76)+1)
-          console.log(randNum);
-          const numbers= document.querySelectorAll('h3')
-          numbers.forEach(num => {
-            if(randNum===parseInt(num.innerText)) {
-              num.parentNode.style.background ='red'
-            }
-          })
-          
-      }
-      
-      const addNewBoard = function (event) {
-        
-        let boards = document.querySelector(".boards")
+        let randNum = Math.floor(Math.random() * 76 + 1);
 
-        for (let i =1;i <= 24;i++) {
+        if (!bingoArray.includes(randNum)) {
+          bingoArray.push(randNum);
+          // console.log(bingoArray);
+
+          // const numbers = document.querySelectorAll("h3");
+          
+          
+
+          const BBnumbers = document.getElementsByClassName("BBnumHeading")
+
+          for (let i =0;i<BBnumbers.length;i++) {
+            if (randNum === parseInt(BBnumbers[i].innerText)) {
+              BBnumbers[i].parentNode.style.backgroundColor = "red";
+              
+              // BBnumbers[i].classList.add = `Winning${i}`
+            }
+          }
+          const userNumbers = document.getElementsByClassName("userNumberHeading")
+
+          for (let i =0;i<userNumbers.length;i++) {
+            if (randNum === parseInt(userNumbers[i].innerText)) {
+              userNumbers[i].parentNode.style.backgroundColor = "red";
+              winningNums.push(parseInt(userNumbers[i].innerText))
+              console.log(winningNums);
+              
+            }
+          }
+
+          //  trying to create a condition that is triggered when every div background is red within a parent div
+          // turn every background green
+        
+          // const backgroundIsRed = (currentValue) => currentValue.parentNode.style.backgroundColor = "red";
+
+          
+        
+
+          
+          const bingoNumbers = document.getElementsByTagName('h3')
+          if (winningNums.length >= 24) {
+            for (let i =0;i<bingoNumbers.length;i++) {
+                if (winningNums.includes(parseInt(bingoNumbers[i].innerText))) {
+                console.log(bingoNumbers[i].innerText);
+                bingoNumbers[i].parentNode.style.backgroundColor = "green";
+            } 
+          } window.alert("BINGO! YOU WON");
+          } 
+          
+        } else {
+          playBingo(event);
+        }        
+      };
+
+      const addNewBoard = function (event) {
+        let boards = document.querySelector(".boards");
+
+        for (let i = 1; i <= 24; i++) {
           const child2 = document.createElement("div"); // this will create an empty day cell
-          child2.className = "userNum"; // assigning the CSS class
+          child2.className = `userNum`; // assigning the CSS class
           const userNumlabel = document.createElement("h3"); //label for bingoboard number
-          const userNum = Math.floor((Math.random()* 76)+1); //for loop interation populates bingoboard with numbers
+          userNumlabel.className = "userNumberHeading"; // assigning the CSS class
+          const userNum = Math.floor(Math.random() * 76 + 1); //for loop interation populates bingoboard with numbers
           userNumlabel.innerText = userNum; //adding the number as innerText of the newly created div
           child2.appendChild(userNumlabel); //adding the <h3> inside the day cell
           boards.appendChild(child2);
         }
-        let div = document.createElement('div')// creates divider div AFTER each userBoard
-        div.className = 'userDividers'; // assign divider css class 
-        div.textContent = `Board ${boardNumber+1}`
-        boards.appendChild(div)
-        boardNumber ++
+        let div = document.createElement("div"); // creates divider div AFTER each userBoard
+        div.className = "userDividers"; // assign divider css class
+        div.textContent = `Board ${boardNumber + 1}`;
+        boards.appendChild(div);
+        boardNumber++;
+        console.log(boards.children);
+      };
 
-      } 
+      const playButton = document.createElement("button");
+      playButton.innerHTML = "Play";
+      document.body.appendChild(playButton);
+      playButton.addEventListener("click", playBingo);
 
-      const playButton = document.createElement("button") 
-      playButton.innerHTML = "Play"
-      document.body.appendChild(playButton)
-      playButton.addEventListener("click", playBingo)
+      const newBoard = document.createElement("button");
+      newBoard.innerHTML = "Add New Board";
+      document.body.appendChild(newBoard);
+      newBoard.addEventListener("click", addNewBoard);
+
       
-      const newBoard = document.createElement("button") 
-      newBoard.innerHTML = "Add New Board"
-      document.body.appendChild(newBoard)
-      newBoard.addEventListener("click", addNewBoard)
-    
-
-  </script>
-</body>
+      //  ATTEMPT TO CREATE CODE TO CHANGE BACKGROUND OF USERBOARD ELEMENTS TO TURN GREEN WHEN ALL ARE RED
+      // const userNumbers = document.getElementsByClassName("userNumberHeadings")
+      // // const childUSER = userNumbers.parentNodes
+      // console.log(userNumbers);
+      //  for (let i = 0;i<userNumbers;i++) {
+      //    let item = userNumber[i]
+      //    console.log(item);
+      //  }
+      //   if (userNumbers[i].childNode.style.background = "red") {
+      //     bingo++
+      //     console.log(bingo);
+      //   }
+      //   if (bingo>=24) {
+      //     for (let i = 0;i<=24;i++) {
+            
+      //       userNumbers[i].childNode.background = "green"
+      //   }
+      //   }
+      // }
+    </script>
+  </body>
 </html>
